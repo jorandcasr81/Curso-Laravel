@@ -11,6 +11,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->truncateTablas([
+            'rol',
+            'permiso'
+        ]);
         // $this->call(UsersTableSeeder::class);
+        $this->call(TablaRolSeeder::class);
+        $this->call(TablaPermisoSeeder::class);
+    }
+
+    protected function truncateTablas(array $tablas)
+    {
+        DB::statement('ALTER TABLE rol DISABLE TRIGGER ALL;');
+        foreach ($tablas as $tabla) {
+            DB::table($tabla)->truncate();
+        }
+        DB::statement('ALTER TABLE rol ENABLE TRIGGER ALL;');
     }
 }
